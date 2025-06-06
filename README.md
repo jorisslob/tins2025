@@ -20,3 +20,25 @@ To place different organisms, you first have to select the tool from the
 
 Can you find the **golden ratio** that keeps most types of organisms alive
 in a steady equilibrium?
+
+## What can you find in the world?
+
+### Water
+
+Water likes to bundle together in puddles.
+
+### Plant
+
+Plants need water to grow.
+
+### Orago
+
+Chill creature that likes to eat plants
+
+### Kakora
+
+Meat eater that likes to eat other creatures
+
+### Mycelon
+
+Eats refuse and makes sure the soil contains nutrients for plants

@@ -10,17 +10,28 @@ const Tool = Object.freeze({
 let current_state = Gamestate.Title;
 let tool = Tool.Grass;
 let img_title;
+let img_water;
+let img_plant;
+let img_orago;
+let img_mycelon;
 let waterDrops = [];
+let canvaswidth = 800;
+let canvasheight = 615;
 
 function setup() {
-  cnv = createCanvas(800,600);
-  let newCanvasX = (windowWidth - 800)/2;
-  let newCanvasY = (windowHeight - 600)/2;
+  cnv = createCanvas(canvaswidth,canvasheight);
+  let newCanvasX = (windowWidth - canvaswidth)/2;
+  let newCanvasY = (windowHeight - canvasheight)/2;
   cnv.position(newCanvasX, newCanvasY);
 }
 
 function preload() {
   img_title = loadImage('/assets/title.png');
+  img_water = loadImage('/assets/water.png');
+  img_plant = loadImage('/assets/plant.png');
+  img_orago = loadImage('/assets/orago.png');
+  img_kakora = loadImage('/assets/kakora.png');
+  img_mycelon = loadImage('/assets/mycelon.png');
 }
 
 
@@ -45,6 +56,11 @@ function title() {
 
 function gameloop() {
   background(0,0,0);
+  image(img_water, 600, 0);
+  image(img_plant, 600, 123);
+  image(img_orago, 600, 246);
+  image(img_kakora, 600, 369);
+  image(img_mycelon, 600, 492);
   fill(139,69,19);
   // Layer one, bedrock
   circle(300,300,300);
