@@ -13,6 +13,7 @@ let img_title;
 let img_water;
 let img_plant;
 let img_orago;
+let img_kakora;
 let img_mycelon;
 let waterDrops = [];
 let canvaswidth = 800;
