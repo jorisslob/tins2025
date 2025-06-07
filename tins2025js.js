@@ -194,8 +194,9 @@ function drawOragos(fg) {
         orago.d += 1;
         closest.d -= 1;
       } else {
-        orago.x -= (orago.x - closest.x) * 0.01;
-        orago.y -= (orago.y - closest.y) * 0.01;
+        moveToward(orago, closest, 1);
+        // orago.x -= (orago.x - closest.x) * 0.01;
+        // orago.y -= (orago.y - closest.y) * 0.01;
       }
     }
     fg.circle(orago.x, orago.y, orago.d);
@@ -259,4 +260,14 @@ function mousePressed(event) {
       }
     }
   } 
+}
+
+function moveToward(obj1, obj2, speed) {
+  let dx = obj2.x - obj1.x;
+  let dy = obj2.y - obj1.y;
+  let distance = (dx ** 2 + dy ** 2) ** 0.5;
+  if (distance > 0) {
+    obj1.x += (dx / distance) * speed;
+    obj1.y += (dy / distance) * speed;
+  }
 }

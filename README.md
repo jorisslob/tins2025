@@ -43,8 +43,9 @@ Meat eater that likes to eat other creatures
 
 Eats refuse and makes sure the soil contains nutrients for plants
 
-## Known Issues
+## TODO
 
+- Create a general function to find the closest organism in a list
 - Kakoras don't do anything yet
 - Mycelons don't do anything yet
 - Make this into a fun game
