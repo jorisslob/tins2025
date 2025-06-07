@@ -42,3 +42,12 @@ Meat eater that likes to eat other creatures
 ### Mycelon
 
 Eats refuse and makes sure the soil contains nutrients for plants
+
+## Known Issues
+
+- First click of title screen is also a click in the game
+- Clicks of water seem too tedious
+- All elements can grow out of the planet
+- Kakoras don't do anything yet
+- Mycelons don't do anything yet
+- Make this into a fun game
