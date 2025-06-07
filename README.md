@@ -45,8 +45,6 @@ Eats refuse and makes sure the soil contains nutrients for plants
 
 ## Known Issues
 
-- Clicks of water seem too tedious
-- All elements can grow out of the planet
 - Kakoras don't do anything yet
 - Mycelons don't do anything yet
 - Make this into a fun game

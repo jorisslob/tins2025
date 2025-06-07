@@ -69,25 +69,38 @@ function title() {
 
 function gameloop() {
   background(0,0,0);
+  scene = createGraphics(canvaswidth-buttonwidth, canvasheight);
   
   // Layer 1, planet
-  fill(139,69,19);
-  circle(300,300,300);
+  scene.fill(139,69,19);
+  scene.circle(300,300,300);
   
   // Layer 2, water
-  drawWater();
+  drawWater(scene);
   
   // Layer 3, plants
-  drawPlants();
+  drawPlants(scene);
   
   // Layer 4, oragos
-  drawOragos();
+  drawOragos(scene);
   
   // Layer 5, kakoras
-  drawKakoras();
+  drawKakoras(scene);
   
   // Layer 6, mycelons
-  drawMycelons();
+  drawMycelons(scene);
+
+  // Make space around the planet back
+  maskLayer = createGraphics(canvaswidth-buttonwidth, canvasheight);
+  maskLayer.background(0,0,0,0);
+  maskLayer.fill(255,255,255,255);
+  maskLayer.circle(300,300,300);
+  
+  sceneImage = scene.get();
+  maskImage = maskLayer.get();
+  
+  sceneImage.mask(maskImage);
+  image(sceneImage,0,0);
   
   // Layer 7, tools
   image(img_water, canvaswidth-buttonwidth, 0);
@@ -118,9 +131,9 @@ function gameloop() {
   }
   fill(0,255,0);
   circle(active_circleX, active_circleY, 10);
-}
+  }
 
-function drawWater() {
+function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
   for (let i = 0; i < waterDrops.length; i++) {
     let drop = waterDrops[i];
@@ -137,15 +150,15 @@ function drawWater() {
         }
       }
     }
-    fill(0, 100, 255, 150);
-    circle(drop.x, drop.y, drop.d);
+    fg.fill(0, 100, 255, 150);
+    fg.circle(drop.x, drop.y, drop.d);
   }
 }
 
-function drawPlants() {
+function drawPlants(fg) {
   plants = plants.filter(plant => plant.d > 2);
-  fill(0, 255, 0, 150);
-  noStroke();
+  fg.fill(0, 255, 0, 150);
+  fg.noStroke();
   for (let i = 0; i < plants.length; i++) {
     let plant = plants[i];
     for (let j = 0; j < waterDrops.length; j++) {
@@ -157,13 +170,13 @@ function drawPlants() {
         continue;
       }
     }
-    circle(plant.x, plant.y, plant.d);
+    fg.circle(plant.x, plant.y, plant.d);
   }
-  stroke(0);
+  fg.stroke(0);
 }  
 
-function drawOragos() {
-  fill(93,66,4,150);
+function drawOragos(fg) {
+  fg.fill(93,66,4,150);
   for (let i = 0; i < oragos.length; i++) {
     let orago = oragos[i];
     let closest;
@@ -185,23 +198,23 @@ function drawOragos() {
         orago.y -= (orago.y - closest.y) * 0.01;
       }
     }
-    circle(orago.x, orago.y, orago.d);
+    fg.circle(orago.x, orago.y, orago.d);
   }
 }
 
-function drawKakoras() {
+function drawKakoras(fg) {
   fill(76,9,9,150);
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
-    circle(kakora.x, kakora.y, 8);
+    fg.circle(kakora.x, kakora.y, 8);
   }
 }
 
-function drawMycelons() {
-  fill(56,10,73,150);
+function drawMycelons(fg) {
+  fg.fill(56,10,73,150);
   for (let i = 0; i < mycelons.length; i++) {
     let mycelon = mycelons[i];
-    circle(mycelon.x, mycelon.y, 13);
+    fg.circle(mycelon.x, mycelon.y, 13);
   }
 }
 
