@@ -48,5 +48,8 @@ Eats refuse and makes sure the soil contains nutrients for plants
 - Create a general function to find the closest organism in a list
 - Kakoras don't do anything yet
 - Mycelons don't do anything yet
-- Make this into a fun game
 - Waterdrops sometimes jumps when they join
+- Show counts of organisms in tools
+- Show a score for biodiversity
+- Have a reset button
+
