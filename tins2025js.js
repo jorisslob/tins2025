@@ -23,6 +23,7 @@ let img_mycelon;
 
 let waterDrops = [];
 let plants = [];
+let oragos = [];
 
 let canvaswidth = 800;
 let canvasheight = 615;
@@ -77,14 +78,17 @@ function gameloop() {
   // Layer 3, plants
   drawPlants();
   
-  // Layer 4, tools
+  // Layer 4, oragos
+  drawOragos();
+  
+  // Layer 5, tools
   image(img_water, canvaswidth-buttonwidth, 0);
   image(img_plant, canvaswidth-buttonwidth, buttonheight);
   image(img_orago, canvaswidth-buttonwidth, 2*buttonheight);
   image(img_kakora, canvaswidth-buttonwidth, 3*buttonheight);
   image(img_mycelon, canvaswidth-buttonwidth, 4*buttonheight);
   
-  // Layer 5, selected tool
+  // Layer 6, selected tool
   active_circleX = canvaswidth-20;
   active_circleY = 0;
   switch(current_tool) {
@@ -138,6 +142,14 @@ function drawPlants() {
   }
 }  
 
+function drawOragos() {
+  fill(93,66,4,150);
+  for (let i = 0; i < oragos.length; i++) {
+    let orago = oragos[i];
+    circle(orago.x, orago.y, 5);
+  }
+}
+
 function mouseClicked(event) {
   if (current_state == Gamestate.Title) {
     current_state = Gamestate.Game;
@@ -167,6 +179,7 @@ function mouseClicked(event) {
             plants.push({ x: mouseX, y: mouseY });
             break;
           case Tool.Orago:
+            oragos.push({ x: mouseX, y: mouseY });
             break;
           case Tool.Kakora:
             break;
