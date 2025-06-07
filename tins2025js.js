@@ -7,8 +7,8 @@ const Tool = Object.freeze({
   Water: Symbol("water"),
   Plant: Symbol("plant"),
   Orago: Symbol("orago"),
-  Kakora: Symbol("Kakora"),
-  Mycelon: Symbol("Mycelon")
+  Kakora: Symbol("kakora"),
+  Mycelon: Symbol("mycelon")
 });
 
 let current_state = Gamestate.Title;
@@ -121,7 +121,7 @@ function gameloop() {
 }
 
 function drawWater() {
-  waterDrops = waterDrops.filter(drop => drop.d != 1);
+  waterDrops = waterDrops.filter(drop => drop.d > 1);
   for (let i = 0; i < waterDrops.length; i++) {
     let drop = waterDrops[i];
     for (let j = 0; j < waterDrops.length; j++) {
@@ -129,7 +129,7 @@ function drawWater() {
         let other = waterDrops[j];
         let d = dist(drop.x, drop.y, other.x, other.y);
         if (d < (drop.d + other.d)/2) {
-          other.d += drop.d;
+          other.d = ((other.d * other.d) + (drop.d * drop.d)) ** 0.5;
           drop.d = 1;
         } else {      
           drop.x += (other.x - drop.x) / d**2;
@@ -143,18 +143,49 @@ function drawWater() {
 }
 
 function drawPlants() {
+  plants = plants.filter(plant => plant.d > 2);
   fill(0, 255, 0, 150);
+  noStroke();
   for (let i = 0; i < plants.length; i++) {
     let plant = plants[i];
-    circle(plant.x, plant.y, 3);
+    for (let j = 0; j < waterDrops.length; j++) {
+      let drop = waterDrops[j];
+      let d = dist(plant.x, plant.y, drop.x, drop.y);
+      if (d < (plant.d + drop.d)/2) {
+        plant.d += 1
+        drop.d -= 1
+        continue;
+      }
+    }
+    circle(plant.x, plant.y, plant.d);
   }
+  stroke(0);
 }  
 
 function drawOragos() {
   fill(93,66,4,150);
   for (let i = 0; i < oragos.length; i++) {
     let orago = oragos[i];
-    circle(orago.x, orago.y, 5);
+    let closest;
+    let closest_d = 1000;
+    for (let j = 0; j < plants.length; j++) {
+      let plant = plants[j];
+      let d = dist(orago.x, orago.y, plant.x, plant.y);
+      if (d < closest_d) {
+        closest_d = d;
+        closest = plant;
+      }
+    }
+    if (closest_d != 1000) {
+      if (closest_d < (orago.d + closest.d)/2) {
+        orago.d += 1;
+        closest.d -= 1;
+      } else {
+        orago.x -= (orago.x - closest.x) * 0.01;
+        orago.y -= (orago.y - closest.y) * 0.01;
+      }
+    }
+    circle(orago.x, orago.y, orago.d);
   }
 }
 
@@ -200,10 +231,10 @@ function mouseClicked(event) {
             waterDrops.push({ x: mouseX, y: mouseY, d: 2 });
             break;
           case Tool.Plant:
-            plants.push({ x: mouseX, y: mouseY });
+            plants.push({ x: mouseX, y: mouseY, d: 3 });
             break;
           case Tool.Orago:
-            oragos.push({ x: mouseX, y: mouseY });
+            oragos.push({ x: mouseX, y: mouseY, d: 5 });
             break;
           case Tool.Kakora:
             kakoras.push({ x: mouseX, y: mouseY });
