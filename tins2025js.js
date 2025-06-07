@@ -205,7 +205,7 @@ function drawMycelons() {
   }
 }
 
-function mouseClicked(event) {
+function mousePressed(event) {
   if (current_state == Gamestate.Title) {
     current_state = Gamestate.Game;
   } else {
