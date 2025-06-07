@@ -206,7 +206,7 @@ function drawKakoras(fg) {
   fill(76,9,9,150);
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
-    fg.circle(kakora.x, kakora.y, 8);
+    fg.circle(kakora.x, kakora.y, kakora.d);
   }
 }
 
@@ -214,7 +214,7 @@ function drawMycelons(fg) {
   fg.fill(56,10,73,150);
   for (let i = 0; i < mycelons.length; i++) {
     let mycelon = mycelons[i];
-    fg.circle(mycelon.x, mycelon.y, 13);
+    fg.circle(mycelon.x, mycelon.y, mycelon.d);
   }
 }
 
@@ -250,10 +250,10 @@ function mousePressed(event) {
             oragos.push({ x: mouseX, y: mouseY, d: 5 });
             break;
           case Tool.Kakora:
-            kakoras.push({ x: mouseX, y: mouseY });
+            kakoras.push({ x: mouseX, y: mouseY, d: 8 });
             break;
           case Tool.Mycelon:
-            mycelons.push({ x: mouseX, y: mouseY });
+            mycelons.push({ x: mouseX, y: mouseY, d: 13 });
             break;
         }
       }
