@@ -4,20 +4,29 @@ const Gamestate = Object.freeze({
 });
 
 const Tool = Object.freeze({
-  Grass: Symbol("grass")
+  Water: Symbol("water"),
+  Plant: Symbol("plant"),
+  Orago: Symbol("orago"),
+  Kakora: Symbol("Kakora"),
+  Mycelon: Symbol("Mycelon")
 });
 
 let current_state = Gamestate.Title;
-let tool = Tool.Grass;
+let current_tool = Tool.Water;
+
 let img_title;
 let img_water;
 let img_plant;
 let img_orago;
 let img_kakora;
 let img_mycelon;
+
 let waterDrops = [];
+
 let canvaswidth = 800;
 let canvasheight = 615;
+let buttonwidth = 200;
+let buttonheight = 123;
 
 function setup() {
   cnv = createCanvas(canvaswidth,canvasheight);
@@ -34,7 +43,6 @@ function preload() {
   img_kakora = loadImage('/assets/kakora.png');
   img_mycelon = loadImage('/assets/mycelon.png');
 }
-
 
 function draw() {
   switch (current_state) {
@@ -57,16 +65,43 @@ function title() {
 
 function gameloop() {
   background(0,0,0);
-  image(img_water, 600, 0);
-  image(img_plant, 600, 123);
-  image(img_orago, 600, 246);
-  image(img_kakora, 600, 369);
-  image(img_mycelon, 600, 492);
+  
+  // Layer 1, planet
   fill(139,69,19);
-  // Layer one, bedrock
   circle(300,300,300);
-  // Layer two, water
+  
+  // Layer 2, water
   drawWater();
+  
+  // Layer 3, tools
+  image(img_water, canvaswidth-buttonwidth, 0);
+  image(img_plant, canvaswidth-buttonwidth, buttonheight);
+  image(img_orago, canvaswidth-buttonwidth, 2*buttonheight);
+  image(img_kakora, canvaswidth-buttonwidth, 3*buttonheight);
+  image(img_mycelon, canvaswidth-buttonwidth, 4*buttonheight);
+  
+  // Layer 4, selected tool
+  active_circleX = canvaswidth-20;
+  active_circleY = 0;
+  switch(current_tool) {
+    case Tool.Water:
+      active_circleY = buttonheight/2;
+      break;
+    case Tool.Plant:
+      active_circleY = buttonheight*1.5;
+      break;
+    case Tool.Orago:
+      active_circleY = buttonheight*2.5;
+      break;
+    case Tool.Kakora:
+      active_circleY = buttonheight*3.5;
+      break;
+    case Tool.Mycelon:
+      active_circleY = buttonheight*4.5;
+      break;
+  }
+  fill(0,255,0);
+  circle(active_circleX, active_circleY, 10);
 }
 
 function drawWater() {
@@ -97,14 +132,34 @@ function mouseClicked(event) {
   } else {
     // We are in the game!
     if (mouseX >= 600) {
-      console.log("select tool!");
+      if (mouseY <= buttonheight) {
+        current_tool = Tool.Water;
+      } else if (mouseY <= 2*buttonheight) {
+        current_tool = Tool.Plant;
+      } else if (mouseY <= 3*buttonheight) {
+        current_tool = Tool.Orago;
+      } else if (mouseY <= 4*buttonheight) {
+        current_tool = Tool.Kakora;
+      } else {
+        current_tool = Tool.Mycelon;
+      }
     }
     else {
-      console.log("use tool!");
       d_center = dist(mouseX, mouseY, 300, 300);
       if (d_center < 150) {
-        waterDrops.push({ x: mouseX, y: mouseY, d: 2 });
-        console.log(waterDrops.length);
+        switch(current_tool) {
+          case Tool.Water: 
+            waterDrops.push({ x: mouseX, y: mouseY, d: 2 });
+            break;
+          case Tool.Plant:
+            break;
+          case Tool.Orago:
+            break;
+          case Tool.Kakora:
+            break;
+          case Tool.Mycelon:
+            break;
+        }
       }
     }
   } 
