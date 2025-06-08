@@ -135,6 +135,14 @@ function gameloop() {
 
 function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
+  // randomly spawn in a water meteor
+  if (random(0,100)>98) {
+    x1 = random(-150,150)+300;
+    y1 = random(-150,150)+300;
+    if (dist(x1, y1, 300, 300)<300) {
+      waterDrops.push({x: x1, y: y1, d: random(2,13)})
+    }
+  }
   for (let i = 0; i < waterDrops.length; i++) {
     let drop = waterDrops[i];
     for (let j = 0; j < waterDrops.length; j++) {
@@ -157,6 +165,14 @@ function drawWater(fg) {
 
 function drawPlants(fg) {
   plants = plants.filter(plant => plant.d > 2);
+  // randomly spawn in a plant meteor
+  if (random(0,1000)>998) {
+    x1 = random(-150,150)+300;
+    y1 = random(-150,150)+300;
+    if (dist(x1, y1, 300, 300)<300) {
+      plants.push({x: x1, y: y1, d: random(3,8)})
+    }
+  }
   fg.fill(0, 255, 0, 150);
   fg.noStroke();
   for (let i = 0; i < plants.length; i++) {
@@ -176,9 +192,13 @@ function drawPlants(fg) {
 }  
 
 function drawOragos(fg) {
+  oragos = oragos.filter(orago => orago.d > 3);
   fg.fill(93,66,4,150);
   for (let i = 0; i < oragos.length; i++) {
     let orago = oragos[i];
+    if (random(0,1000)>990) {
+      orago.d -= 1;
+    }
     closest = closestTo(orago, plants);
     if (closest != null) {
       closest_d = dist(orago.x, orago.y, closest.x, closest.y);
@@ -194,9 +214,13 @@ function drawOragos(fg) {
 }
 
 function drawKakoras(fg) {
-  fill(76,9,9,150);
+  kakoras = kakoras.filter(kakora => kakora.d > 5);
+  fg.fill(255,0,0,150);
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
+    if (random(0,1000)>990) {
+      kakora.d -= 1;
+    }
     closest = closestTo(kakora, oragos);
     if (closest != null) {
       closest_d = dist(kakora.x, kakora.y, closest.x, closest.y);
@@ -267,8 +291,8 @@ function moveToward(obj1, obj2, speed) {
   let dy = obj2.y - obj1.y;
   let distance = (dx ** 2 + dy ** 2) ** 0.5;
   if (distance > 0) {
-    obj1.x += (dx / distance) * speed;
-    obj1.y += (dy / distance) * speed;
+    obj1.x += (dx / distance) * speed * (random(1,100)/100);
+    obj1.y += (dy / distance) * speed * (random(1,100)/100);
   }
 }
 
