@@ -21,6 +21,7 @@ let img_orago;
 let img_kakora;
 let img_mycelon;
 
+let dirt = [];
 let waterDrops = [];
 let plants = [];
 let oragos = [];
@@ -37,6 +38,12 @@ function setup() {
   let newCanvasX = (windowWidth - canvaswidth)/2;
   let newCanvasY = (windowHeight - canvasheight)/2;
   cnv.position(newCanvasX, newCanvasY);
+  for (let i = 0; i < 300; i++) {
+    dirt[i] = []
+    for (let j = 0; j < 300; j++) {
+      dirt[i][j] = 0;
+    }
+  }
 }
 
 function preload() {
@@ -72,8 +79,7 @@ function gameloop() {
   scene = createGraphics(canvaswidth-buttonwidth, canvasheight);
   
   // Layer 1, planet
-  scene.fill(139,69,19);
-  scene.circle(300,300,300);
+  drawDirt(scene);
   
   // Layer 2, water
   drawWater(scene);
@@ -133,6 +139,21 @@ function gameloop() {
   circle(active_circleX, active_circleY, 10);
   }
 
+function drawDirt(fg) {
+  fg.loadPixels();
+  for (let i=0; i<dirt.length; i++) {
+    for (let j=0; j<dirt[i].length; j++) {
+      let index = ((i + 150) + (j+150)*fg.width) * 4;
+      let val = dirt[i][j];
+      fg.pixels[index + 0] = val + 34;
+      fg.pixels[index + 1] = val + 13;
+      fg.pixels[index + 2] = val + 5;
+      fg.pixels[index + 3] = 255;
+    }
+  }
+  fg.updatePixels();
+}
+
 function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
   // randomly spawn in a water meteor
@@ -164,6 +185,7 @@ function drawWater(fg) {
 }
 
 function drawPlants(fg) {
+  makeDirtFromDyingInList(plants, 2);
   plants = plants.filter(plant => plant.d > 2);
   // randomly spawn in a plant meteor
   if (random(0,1000)>998) {
@@ -192,6 +214,7 @@ function drawPlants(fg) {
 }  
 
 function drawOragos(fg) {
+  makeDirtFromDyingInList(oragos, 3);
   oragos = oragos.filter(orago => orago.d > 3);
   fg.fill(93,66,4,150);
   for (let i = 0; i < oragos.length; i++) {
@@ -214,6 +237,7 @@ function drawOragos(fg) {
 }
 
 function drawKakoras(fg) {
+  makeDirtFromDyingInList(kakoras, 5);
   kakoras = kakoras.filter(kakora => kakora.d > 5);
   fg.fill(255,0,0,150);
   for (let i = 0; i < kakoras.length; i++) {
@@ -308,4 +332,17 @@ function closestTo(obj1, list) {
     }
   }
   return closest;
+}
+
+function makeDirtFromDyingInList(list, deathnum) {
+  for (let i = 0; i < list.length; i++) {
+    let creature = list[i];
+    if (creature.d <= deathnum) {
+      dirtx = creature.x - 150;
+      dirty = creature.y - 150;
+      if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
+        dirt[int(dirtx)][int(dirty)] += creature.d;
+      }
+    }
+  }
 }
