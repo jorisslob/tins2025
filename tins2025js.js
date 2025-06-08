@@ -179,24 +179,14 @@ function drawOragos(fg) {
   fg.fill(93,66,4,150);
   for (let i = 0; i < oragos.length; i++) {
     let orago = oragos[i];
-    let closest;
-    let closest_d = 1000;
-    for (let j = 0; j < plants.length; j++) {
-      let plant = plants[j];
-      let d = dist(orago.x, orago.y, plant.x, plant.y);
-      if (d < closest_d) {
-        closest_d = d;
-        closest = plant;
-      }
-    }
-    if (closest_d != 1000) {
+    closest = closestTo(orago, plants);
+    if (closest != null) {
+      closest_d = dist(orago.x, orago.y, closest.x, closest.y);
       if (closest_d < (orago.d + closest.d)/2) {
         orago.d += 1;
         closest.d -= 1;
       } else {
         moveToward(orago, closest, 1);
-        // orago.x -= (orago.x - closest.x) * 0.01;
-        // orago.y -= (orago.y - closest.y) * 0.01;
       }
     }
     fg.circle(orago.x, orago.y, orago.d);
@@ -207,6 +197,16 @@ function drawKakoras(fg) {
   fill(76,9,9,150);
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
+    closest = closestTo(kakora, oragos);
+    if (closest != null) {
+      closest_d = dist(kakora.x, kakora.y, closest.x, closest.y);
+      if (closest_d < (kakora.d + closest.d)/2) {
+        kakora.d += 1;
+        closest.d -= 1;
+      } else {
+        moveToward(kakora, closest, 2);
+      }
+    }
     fg.circle(kakora.x, kakora.y, kakora.d);
   }
 }
@@ -270,4 +270,18 @@ function moveToward(obj1, obj2, speed) {
     obj1.x += (dx / distance) * speed;
     obj1.y += (dy / distance) * speed;
   }
+}
+
+function closestTo(obj1, list) {
+  let closest = null;
+  let closest_d = 1000;
+  for (let j = 0; j < list.length; j++) {
+    let obj2 = list[j];
+    let d = dist(obj1.x, obj1.y, obj2.x, obj2.y);
+    if (d < closest_d) {
+      closest_d = d;
+      closest = obj2;
+    }
+  }
+  return closest;
 }
