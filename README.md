@@ -45,6 +45,6 @@ Eats refuse and makes sure the soil contains nutrients for plants
 
 ## TODO
 
-- Show a score for biodiversity
-- Have a reset button
 - Waterdrops sometimes jumps when they join
+- Kakoras are dominating the world, fix it
+- Have a reset button

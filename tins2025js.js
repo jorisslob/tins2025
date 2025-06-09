@@ -146,7 +146,24 @@ function gameloop() {
   }
   fill(0,255,0);
   circle(active_circleX, active_circleY, 10);
-  }
+  
+  // Layer 9, score
+  let wscore = listSum(waterDrops)
+  let pscore = listSum(plants)
+  let oscore = listSum(oragos)
+  let kscore = listSum(kakoras)
+  let mscore = listSum(mycelons)
+  let tscore = wscore+pscore+oscore+kscore+mscore;
+  let biodiv;
+  biodiv = 0;
+  if (wscore > 0) { biodiv += (wscore / tscore) * log(wscore / tscore); }
+  if (pscore > 0) { biodiv += (pscore / tscore) * log(pscore / tscore); }
+  if (oscore > 0) { biodiv += (oscore / tscore) * log(oscore / tscore); }
+  if (kscore > 0) { biodiv += (kscore / tscore) * log(kscore / tscore); }
+  if (mscore > 0) { biodiv += (mscore / tscore) * log(mscore / tscore); }
+  biodiv = -int(biodiv*10)
+  text("Bio-score: "+biodiv, 50, canvasheight - 50);
+}
 
 function drawDirt(fg) {
   fg.loadPixels();
@@ -275,7 +292,7 @@ function drawMycelons(fg) {
     let mycelon = mycelons[i];
     if (random(0,1000)>990) {
       
-      switch(random(0,4)) {
+      switch(int(random(0,4))) {
         case 0: 
           waterDrops.push({ x: mycelon.x, y: mycelon.y, d:2 })
           mycelon.d -= 2;
@@ -364,6 +381,10 @@ function moveToward(obj1, obj2, speed) {
 function randomMove(obj1) {
   obj1.x += (random(0,101) - 50) / 100;
   obj1.y += (random(0,101) - 50) / 100;
+  if (dist(obj1.x, obj1.y, 300, 300)>100) {
+    center = {x:300, y:300};
+    moveToward(obj1, center, 1);
+  }
 }
 
 function closestTo(obj1, list) {
