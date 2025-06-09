@@ -1,5 +1,3 @@
-// Constants
-
 const Gamestate = Object.freeze({
   Title: Symbol("title"),
   Game: Symbol("game"),
@@ -17,6 +15,9 @@ const canvaswidth = 800;
 const canvasheight = 615;
 const buttonwidth = 200;
 const buttonheight = 123;
+
+const PLANET_RADIUS = 150;
+const PLANET_CENTER = { x: 300, y: 300 };
 
 let scene;
 let maskImage;
@@ -44,9 +45,9 @@ function setup() {
   const newCanvasX = (windowWidth - canvaswidth) / 2;
   const newCanvasY = (windowHeight - canvasheight) / 2;
   cnv.position(newCanvasX, newCanvasY);
-  for (let i = 0; i < 300; i++) {
+  for (let i = 0; i < PLANET_RADIUS*2; i++) {
     dirt[i] = []
-    for (let j = 0; j < 300; j++) {
+    for (let j = 0; j < PLANET_RADIUS*2; j++) {
       dirt[i][j] = 0;
     }
   }
@@ -55,7 +56,7 @@ function setup() {
   const maskLayer = createGraphics(canvaswidth - buttonwidth, canvasheight);
   maskLayer.background(0, 0, 0, 0);
   maskLayer.fill(255, 255, 255, 255);
-  maskLayer.circle(300, 300, 300);
+  maskLayer.circle(PLANET_CENTER.x, PLANET_CENTER.y, PLANET_RADIUS*2);
 
   maskImage = maskLayer.get();
 }
@@ -167,8 +168,8 @@ function gameloop() {
   biodiv = -int(biodiv * 10)
   text("Bio-score: " + biodiv, 50, canvasheight - 50);
   let soil = 0
-  for (let i = 0; i < 300; i++) {
-    for (let j = 0; j < 300; j++) {
+  for (let i = 0; i < PLANET_RADIUS*2; i++) {
+    for (let j = 0; j < PLANET_RADIUS*2; j++) {
       soil += dirt[i][j];
     }
   }
@@ -194,9 +195,9 @@ function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
   // randomly spawn in a water meteor
   if (random(0, 100) > 98) {
-    const x1 = random(-150, 150) + 300;
-    const y1 = random(-150, 150) + 300;
-    if (dist(x1, y1, 300, 300) < 300) {
+    const x1 = random(-PLANET_RADIUS, PLANET_RADIUS) + PLANET_RADIUS*2;
+    const y1 = random(-PLANET_RADIUS, PLANET_RADIUS) + PLANET_RADIUS*2;
+    if (dist(x1, y1, PLANET_CENTER.x, PLANET_CENTER.y) < PLANET_RADIUS) {
       waterDrops.push({ x: x1, y: y1, d: random(2, 13) })
     }
   }
@@ -227,9 +228,9 @@ function drawPlants(fg) {
   plants = plants.filter(plant => plant.d > 2);
   // randomly spawn in a plant meteor
   if (random(0, 1000) > 998) {
-    const x1 = random(-150, 150) + 300;
-    const y1 = random(-150, 150) + 300;
-    if (dist(x1, y1, 300, 300) < 300) {
+    const x1 = random(-PLANET_RADIUS, PLANET_RADIUS) + PLANET_RADIUS*2;
+    const y1 = random(-PLANET_RADIUS, PLANET_RADIUS) + PLANET_RADIUS*2;
+    if (dist(x1, y1, PLANET_CENTER.x, PLANET_CENTER.y) < PLANET_RADIUS) {
       plants.push({ x: x1, y: y1, d: random(3, 8) })
     }
   }
@@ -323,9 +324,9 @@ function drawMycelons(fg) {
           break;
       }
     }
-    const dirtx = mycelon.x - 150;
-    const dirty = mycelon.y - 150;
-    if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
+    const dirtx = mycelon.x - PLANET_RADIUS;
+    const dirty = mycelon.y - PLANET_RADIUS;
+    if (dirtx >= 0 && dirtx < PLANET_RADIUS*2 && dirty >= 0 && dirty < PLANET_RADIUS*2) {
       if (dirt[int(dirtx)][int(dirty)] > 0) {
         mycelon.d += dirt[int(dirtx)][int(dirty)];
         dirt[int(dirtx)][int(dirty)] = 0;
@@ -356,7 +357,7 @@ function mousePressed(event) {
       }
     }
     else {
-      const d_center = dist(mouseX, mouseY, 300, 300);
+      const d_center = dist(mouseX, mouseY, PLANET_CENTER.x, PLANET_CENTER.y);
       if (d_center < 150) {
         switch (current_tool) {
           case Tool.Water:
@@ -393,7 +394,7 @@ function moveToward(obj1, obj2, speed) {
 function randomMove(obj1) {
   obj1.x += (random(0, 101) - 50) / 100;
   obj1.y += (random(0, 101) - 50) / 100;
-  if (dist(obj1.x, obj1.y, 300, 300) > 100) {
+  if (dist(obj1.x, obj1.y, PLANET_CENTER.x, PLANET_CENTER.y) > PLANET_RADIUS*0.75) {
     const center = { x: 300, y: 300 };
     moveToward(obj1, center, 1);
   }
