@@ -11,6 +11,9 @@ const Tool = Object.freeze({
   Mycelon: Symbol("mycelon")
 });
 
+let scene;
+let maskImage;
+
 let current_state = Gamestate.Title;
 let current_tool = Tool.Water;
 
@@ -44,6 +47,14 @@ function setup() {
       dirt[i][j] = 0;
     }
   }
+  scene = createGraphics(canvaswidth-buttonwidth, canvasheight);
+  // Make space around the planet back
+  maskLayer = createGraphics(canvaswidth-buttonwidth, canvasheight);
+  maskLayer.background(0,0,0,0);
+  maskLayer.fill(255,255,255,255);
+  maskLayer.circle(300,300,300);
+  
+  maskImage = maskLayer.get();
 }
 
 function preload() {
@@ -76,7 +87,7 @@ function title() {
 
 function gameloop() {
   background(0,0,0);
-  scene = createGraphics(canvaswidth-buttonwidth, canvasheight);
+
   
   // Layer 1, planet
   drawDirt(scene);
@@ -96,15 +107,7 @@ function gameloop() {
   // Layer 6, mycelons
   drawMycelons(scene);
 
-  // Make space around the planet back
-  maskLayer = createGraphics(canvaswidth-buttonwidth, canvasheight);
-  maskLayer.background(0,0,0,0);
-  maskLayer.fill(255,255,255,255);
-  maskLayer.circle(300,300,300);
-  
   sceneImage = scene.get();
-  maskImage = maskLayer.get();
-  
   sceneImage.mask(maskImage);
   image(sceneImage,0,0);
   
@@ -229,7 +232,7 @@ function drawOragos(fg) {
         orago.d += 1;
         closest.d -= 1;
       } else {
-        moveToward(orago, closest, 1);
+        moveToward(orago, closest, 2);
       }
     }
     fg.circle(orago.x, orago.y, orago.d);
@@ -252,7 +255,7 @@ function drawKakoras(fg) {
         kakora.d += 1;
         closest.d -= 1;
       } else {
-        moveToward(kakora, closest, 2);
+        moveToward(kakora, closest, 1);
       }
     }
     fg.circle(kakora.x, kakora.y, kakora.d);
@@ -260,9 +263,41 @@ function drawKakoras(fg) {
 }
 
 function drawMycelons(fg) {
+  mycelons = mycelons.filter(kakora => kakora.d > 8);
   fg.fill(56,10,73,150);
   for (let i = 0; i < mycelons.length; i++) {
     let mycelon = mycelons[i];
+    if (random(0,1000)>990) {
+      
+      switch(random(0,4)) {
+        case 0: 
+          waterDrops.push({ x: mycelon.x, y: mycelon.y, d:2 })
+          mycelon.d -= 2;
+          break;
+        case 1:
+          plants.push({ x: mycelon.x, y: mycelon.y, d:3 })
+          mycelon.d -= 3;
+          break;
+        case 2:
+          oragos.push({ x: mycelon.x, y: mycelon.y, d:5 })
+          mycelon.d -= 5;
+          break;
+        case 3:
+          kakoras.push({ x: mycelon.x, y: mycelon.y, d:8 })
+          mycelon.d -= 8;
+          break;
+      }
+    }
+    dirtx = mycelon.x - 150;
+    dirty = mycelon.y - 150;
+    if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
+      if (dirt[int(dirtx)][int(dirty)] > 0) {
+        mycelon.d += dirt[int(dirtx)][int(dirty)];
+        dirt[int(dirtx)][int(dirty)] = 0;
+      } else {
+        randomMove(mycelon);
+      }
+    } 
     fg.circle(mycelon.x, mycelon.y, mycelon.d);
   }
 }
@@ -320,6 +355,11 @@ function moveToward(obj1, obj2, speed) {
   }
 }
 
+function randomMove(obj1) {
+  obj1.x += (random(0,101) - 50) / 100;
+  obj1.y += (random(0,101) - 50) / 100;
+}
+
 function closestTo(obj1, list) {
   let closest = null;
   let closest_d = 1000;
@@ -341,7 +381,7 @@ function makeDirtFromDyingInList(list, deathnum) {
       dirtx = creature.x - 150;
       dirty = creature.y - 150;
       if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
-        dirt[int(dirtx)][int(dirty)] += creature.d;
+        dirt[int(dirtx)][int(dirty)] += creature.d * 5;
       }
     }
   }
