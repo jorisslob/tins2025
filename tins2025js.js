@@ -169,7 +169,7 @@ function gameloop() {
       soil += dirt[i][j];
     }
   }
-  text"Soil health: "+soil, 50, canvasheight - 25);
+  text("Soil health: "+soil, 50, canvasheight - 25);
 }
 
 function drawDirt(fg) {
@@ -204,6 +204,8 @@ function drawWater(fg) {
         let other = waterDrops[j];
         let d = dist(drop.x, drop.y, other.x, other.y);
         if (d < (drop.d + other.d)/2) {
+          other.x = ((drop.x * drop.d) + (other.x * other.d)) / (drop.d + other.d);
+          other.y = ((drop.y * drop.d) + (other.y * other.d)) / (drop.d + other.d);
           other.d = ((other.d * other.d) + (drop.d * drop.d)) ** 0.5;
           drop.d = 1;
         } else {      
