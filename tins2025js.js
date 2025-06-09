@@ -163,6 +163,13 @@ function gameloop() {
   if (mscore > 0) { biodiv += (mscore / tscore) * log(mscore / tscore); }
   biodiv = -int(biodiv*10)
   text("Bio-score: "+biodiv, 50, canvasheight - 50);
+  soil = 0
+  for (let i = 0; i<300; i++) {
+    for (let j = 0; j<300; j++) {
+      soil += dirt[i][j];
+    }
+  }
+  text"Soil health: "+soil, 50, canvasheight - 25);
 }
 
 function drawDirt(fg) {
@@ -269,7 +276,7 @@ function drawKakoras(fg) {
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
     if (random(0,1000)>990) {
-      kakora.d -= 1;
+      kakora.d -= random(1,5);
     }
     closest = closestTo(kakora, oragos);
     if (closest != null) {
