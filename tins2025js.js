@@ -113,10 +113,16 @@ function gameloop() {
   
   // Layer 7, tools
   image(img_water, canvaswidth-buttonwidth, 0);
+  fill(255);
+  text(str(int(listSum(waterDrops))),canvaswidth - 80, buttonheight/2)
   image(img_plant, canvaswidth-buttonwidth, buttonheight);
+  text(str(int(listSum(plants))),canvaswidth - 80, buttonheight*1.5)
   image(img_orago, canvaswidth-buttonwidth, 2*buttonheight);
+  text(str(int(listSum(oragos))),canvaswidth - 80, buttonheight*2.5)
   image(img_kakora, canvaswidth-buttonwidth, 3*buttonheight);
+  text(str(int(listSum(kakoras))),canvaswidth - 80, buttonheight*3.5)
   image(img_mycelon, canvaswidth-buttonwidth, 4*buttonheight);
+  text(str(int(listSum(mycelons))),canvaswidth - 80, buttonheight*4.5)
   
   // Layer 8, selected tool
   active_circleX = canvaswidth-20;
@@ -385,4 +391,12 @@ function makeDirtFromDyingInList(list, deathnum) {
       }
     }
   }
+}
+
+function listSum(list) {
+  sum = 0;
+  for (let i = 0; i < list.length; i++) {
+    sum += list[i].d;
+  }
+  return sum;
 }
