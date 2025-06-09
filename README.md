@@ -45,8 +45,7 @@ Eats refuse and makes sure the soil contains nutrients for plants
 
 ## TODO
 
-- Mycelons don't do anything yet
-- Waterdrops sometimes jumps when they join
 - Show counts of organisms in tools
 - Show a score for biodiversity
 - Have a reset button
+- Waterdrops sometimes jumps when they join
