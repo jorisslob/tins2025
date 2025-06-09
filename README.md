@@ -21,6 +21,13 @@ To place different organisms, you first have to select the tool from the
 Can you find the **golden ratio** that keeps most types of organisms alive
 in a steady equilibrium?
 
+## How to play
+- Get the latest version of processing for your operating system at https://processing.org/.
+- Unzip the source code
+- Open `sketch.properties` in Processing
+- Press play in processing
+- Be utterly confused about what is happening in your favorite browser
+
 ## What can you find in the world?
 
 ### Water
@@ -41,9 +48,11 @@ Meat eater that likes to eat other creatures
 
 ### Mycelon
 
-Eats refuse and makes sure the soil contains nutrients for plants
+Eats refuse and spawns in other creatures when it eats the dirt left by other creatures.
 
-## TODO
+## Tools used
 
-- Kakoras are dominating the world, fix it
-- Have a reset button
+- Processing 4.4.4
+- Gimp 3.0.4
+- Microsoft 365 Copilot for some code questions (no vibe coding or image generation)
+- Firefox 139.0.1 (64-bit)
