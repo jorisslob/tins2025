@@ -1,3 +1,5 @@
+// Constants
+
 const Gamestate = Object.freeze({
   Title: Symbol("title"),
   Game: Symbol("game"),
@@ -10,6 +12,11 @@ const Tool = Object.freeze({
   Kakora: Symbol("kakora"),
   Mycelon: Symbol("mycelon")
 });
+
+const canvaswidth = 800;
+const canvasheight = 615;
+const buttonwidth = 200;
+const buttonheight = 123;
 
 let scene;
 let maskImage;
@@ -31,15 +38,11 @@ let oragos = [];
 let kakoras = [];
 let mycelons = [];
 
-let canvaswidth = 800;
-let canvasheight = 615;
-let buttonwidth = 200;
-let buttonheight = 123;
 
 function setup() {
-  cnv = createCanvas(canvaswidth, canvasheight);
-  let newCanvasX = (windowWidth - canvaswidth) / 2;
-  let newCanvasY = (windowHeight - canvasheight) / 2;
+  const cnv = createCanvas(canvaswidth, canvasheight);
+  const newCanvasX = (windowWidth - canvaswidth) / 2;
+  const newCanvasY = (windowHeight - canvasheight) / 2;
   cnv.position(newCanvasX, newCanvasY);
   for (let i = 0; i < 300; i++) {
     dirt[i] = []
@@ -49,7 +52,7 @@ function setup() {
   }
   scene = createGraphics(canvaswidth - buttonwidth, canvasheight);
   // Make space around the planet back
-  maskLayer = createGraphics(canvaswidth - buttonwidth, canvasheight);
+  const maskLayer = createGraphics(canvaswidth - buttonwidth, canvasheight);
   maskLayer.background(0, 0, 0, 0);
   maskLayer.fill(255, 255, 255, 255);
   maskLayer.circle(300, 300, 300);
@@ -107,7 +110,7 @@ function gameloop() {
   // Layer 6, mycelons
   drawMycelons(scene);
 
-  sceneImage = scene.get();
+  const sceneImage = scene.get();
   sceneImage.mask(maskImage);
   image(sceneImage, 0, 0);
 
@@ -125,8 +128,8 @@ function gameloop() {
   text(str(int(listSum(mycelons))), canvaswidth - 80, buttonheight * 4.5)
 
   // Layer 8, selected tool
-  active_circleX = canvaswidth - 20;
-  active_circleY = 0;
+  const active_circleX = canvaswidth - 20;
+  let active_circleY = 0;
   switch (current_tool) {
     case Tool.Water:
       active_circleY = buttonheight / 2;
@@ -148,12 +151,12 @@ function gameloop() {
   circle(active_circleX, active_circleY, 10);
 
   // Layer 9, score
-  let wscore = listSum(waterDrops)
-  let pscore = listSum(plants)
-  let oscore = listSum(oragos)
-  let kscore = listSum(kakoras)
-  let mscore = listSum(mycelons)
-  let tscore = wscore + pscore + oscore + kscore + mscore;
+  const wscore = listSum(waterDrops)
+  const pscore = listSum(plants)
+  const oscore = listSum(oragos)
+  const kscore = listSum(kakoras)
+  const mscore = listSum(mycelons)
+  const tscore = wscore + pscore + oscore + kscore + mscore;
   let biodiv;
   biodiv = 0;
   if (wscore > 0) { biodiv += (wscore / tscore) * log(wscore / tscore); }
@@ -163,7 +166,7 @@ function gameloop() {
   if (mscore > 0) { biodiv += (mscore / tscore) * log(mscore / tscore); }
   biodiv = -int(biodiv * 10)
   text("Bio-score: " + biodiv, 50, canvasheight - 50);
-  soil = 0
+  let soil = 0
   for (let i = 0; i < 300; i++) {
     for (let j = 0; j < 300; j++) {
       soil += dirt[i][j];
@@ -176,8 +179,8 @@ function drawDirt(fg) {
   fg.loadPixels();
   for (let i = 0; i < dirt.length; i++) {
     for (let j = 0; j < dirt[i].length; j++) {
-      let index = ((i + 150) + (j + 150) * fg.width) * 4;
-      let val = dirt[i][j];
+      const index = ((i + 150) + (j + 150) * fg.width) * 4;
+      const val = dirt[i][j];
       fg.pixels[index + 0] = val + 34;
       fg.pixels[index + 1] = val + 13;
       fg.pixels[index + 2] = val + 5;
@@ -191,8 +194,8 @@ function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
   // randomly spawn in a water meteor
   if (random(0, 100) > 98) {
-    x1 = random(-150, 150) + 300;
-    y1 = random(-150, 150) + 300;
+    const x1 = random(-150, 150) + 300;
+    const y1 = random(-150, 150) + 300;
     if (dist(x1, y1, 300, 300) < 300) {
       waterDrops.push({ x: x1, y: y1, d: random(2, 13) })
     }
@@ -201,7 +204,7 @@ function drawWater(fg) {
     let drop = waterDrops[i];
     for (let j = 0; j < waterDrops.length; j++) {
       if (i != j) {
-        let other = waterDrops[j];
+        const other = waterDrops[j];
         let d = dist(drop.x, drop.y, other.x, other.y);
         if (d < (drop.d + other.d) / 2) {
           other.x = ((drop.x * drop.d) + (other.x * other.d)) / (drop.d + other.d);
@@ -224,8 +227,8 @@ function drawPlants(fg) {
   plants = plants.filter(plant => plant.d > 2);
   // randomly spawn in a plant meteor
   if (random(0, 1000) > 998) {
-    x1 = random(-150, 150) + 300;
-    y1 = random(-150, 150) + 300;
+    const x1 = random(-150, 150) + 300;
+    const y1 = random(-150, 150) + 300;
     if (dist(x1, y1, 300, 300) < 300) {
       plants.push({ x: x1, y: y1, d: random(3, 8) })
     }
@@ -320,8 +323,8 @@ function drawMycelons(fg) {
           break;
       }
     }
-    dirtx = mycelon.x - 150;
-    dirty = mycelon.y - 150;
+    const dirtx = mycelon.x - 150;
+    const dirty = mycelon.y - 150;
     if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
       if (dirt[int(dirtx)][int(dirty)] > 0) {
         mycelon.d += dirt[int(dirtx)][int(dirty)];
@@ -353,7 +356,7 @@ function mousePressed(event) {
       }
     }
     else {
-      d_center = dist(mouseX, mouseY, 300, 300);
+      const d_center = dist(mouseX, mouseY, 300, 300);
       if (d_center < 150) {
         switch (current_tool) {
           case Tool.Water:
@@ -378,9 +381,9 @@ function mousePressed(event) {
 }
 
 function moveToward(obj1, obj2, speed) {
-  let dx = obj2.x - obj1.x;
-  let dy = obj2.y - obj1.y;
-  let distance = (dx ** 2 + dy ** 2) ** 0.5;
+  const dx = obj2.x - obj1.x;
+  const dy = obj2.y - obj1.y;
+  const distance = (dx ** 2 + dy ** 2) ** 0.5;
   if (distance > 0) {
     obj1.x += (dx / distance) * speed * (random(1, 100) / 100);
     obj1.y += (dy / distance) * speed * (random(1, 100) / 100);
@@ -391,7 +394,7 @@ function randomMove(obj1) {
   obj1.x += (random(0, 101) - 50) / 100;
   obj1.y += (random(0, 101) - 50) / 100;
   if (dist(obj1.x, obj1.y, 300, 300) > 100) {
-    center = { x: 300, y: 300 };
+    const center = { x: 300, y: 300 };
     moveToward(obj1, center, 1);
   }
 }
@@ -400,7 +403,7 @@ function closestTo(obj1, list) {
   let closest = null;
   let closest_d = 1000;
   for (let j = 0; j < list.length; j++) {
-    let obj2 = list[j];
+    const obj2 = list[j];
     let d = dist(obj1.x, obj1.y, obj2.x, obj2.y);
     if (d < closest_d) {
       closest_d = d;
@@ -412,10 +415,10 @@ function closestTo(obj1, list) {
 
 function makeDirtFromDyingInList(list, deathnum) {
   for (let i = 0; i < list.length; i++) {
-    let creature = list[i];
+    const creature = list[i];
     if (creature.d <= deathnum) {
-      dirtx = creature.x - 150;
-      dirty = creature.y - 150;
+      const dirtx = creature.x - 150;
+      const dirty = creature.y - 150;
       if (dirtx >= 0 && dirtx < 300 && dirty >= 0 && dirty < 300) {
         dirt[int(dirtx)][int(dirty)] += creature.d * 5;
       }
@@ -424,7 +427,7 @@ function makeDirtFromDyingInList(list, deathnum) {
 }
 
 function listSum(list) {
-  sum = 0;
+  let sum = 0;
   for (let i = 0; i < list.length; i++) {
     sum += list[i].d;
   }
