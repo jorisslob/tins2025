@@ -37,9 +37,9 @@ let buttonwidth = 200;
 let buttonheight = 123;
 
 function setup() {
-  cnv = createCanvas(canvaswidth,canvasheight);
-  let newCanvasX = (windowWidth - canvaswidth)/2;
-  let newCanvasY = (windowHeight - canvasheight)/2;
+  cnv = createCanvas(canvaswidth, canvasheight);
+  let newCanvasX = (windowWidth - canvaswidth) / 2;
+  let newCanvasY = (windowHeight - canvasheight) / 2;
   cnv.position(newCanvasX, newCanvasY);
   for (let i = 0; i < 300; i++) {
     dirt[i] = []
@@ -47,13 +47,13 @@ function setup() {
       dirt[i][j] = 0;
     }
   }
-  scene = createGraphics(canvaswidth-buttonwidth, canvasheight);
+  scene = createGraphics(canvaswidth - buttonwidth, canvasheight);
   // Make space around the planet back
-  maskLayer = createGraphics(canvaswidth-buttonwidth, canvasheight);
-  maskLayer.background(0,0,0,0);
-  maskLayer.fill(255,255,255,255);
-  maskLayer.circle(300,300,300);
-  
+  maskLayer = createGraphics(canvaswidth - buttonwidth, canvasheight);
+  maskLayer.background(0, 0, 0, 0);
+  maskLayer.fill(255, 255, 255, 255);
+  maskLayer.circle(300, 300, 300);
+
   maskImage = maskLayer.get();
 }
 
@@ -78,7 +78,7 @@ function draw() {
 }
 
 function title() {
-  background(0,0,0);
+  background(0, 0, 0);
   image(img_title, 0, 0);
   if (mouseIsPressed === true) {
     current_state = Gamestate.Game;
@@ -86,74 +86,74 @@ function title() {
 }
 
 function gameloop() {
-  background(0,0,0);
+  background(0, 0, 0);
 
-  
+
   // Layer 1, planet
   drawDirt(scene);
-  
+
   // Layer 2, water
   drawWater(scene);
-  
+
   // Layer 3, plants
   drawPlants(scene);
-  
+
   // Layer 4, oragos
   drawOragos(scene);
-  
+
   // Layer 5, kakoras
   drawKakoras(scene);
-  
+
   // Layer 6, mycelons
   drawMycelons(scene);
 
   sceneImage = scene.get();
   sceneImage.mask(maskImage);
-  image(sceneImage,0,0);
-  
+  image(sceneImage, 0, 0);
+
   // Layer 7, tools
-  image(img_water, canvaswidth-buttonwidth, 0);
+  image(img_water, canvaswidth - buttonwidth, 0);
   fill(255);
-  text(str(int(listSum(waterDrops))),canvaswidth - 80, buttonheight/2)
-  image(img_plant, canvaswidth-buttonwidth, buttonheight);
-  text(str(int(listSum(plants))),canvaswidth - 80, buttonheight*1.5)
-  image(img_orago, canvaswidth-buttonwidth, 2*buttonheight);
-  text(str(int(listSum(oragos))),canvaswidth - 80, buttonheight*2.5)
-  image(img_kakora, canvaswidth-buttonwidth, 3*buttonheight);
-  text(str(int(listSum(kakoras))),canvaswidth - 80, buttonheight*3.5)
-  image(img_mycelon, canvaswidth-buttonwidth, 4*buttonheight);
-  text(str(int(listSum(mycelons))),canvaswidth - 80, buttonheight*4.5)
-  
+  text(str(int(listSum(waterDrops))), canvaswidth - 80, buttonheight / 2)
+  image(img_plant, canvaswidth - buttonwidth, buttonheight);
+  text(str(int(listSum(plants))), canvaswidth - 80, buttonheight * 1.5)
+  image(img_orago, canvaswidth - buttonwidth, 2 * buttonheight);
+  text(str(int(listSum(oragos))), canvaswidth - 80, buttonheight * 2.5)
+  image(img_kakora, canvaswidth - buttonwidth, 3 * buttonheight);
+  text(str(int(listSum(kakoras))), canvaswidth - 80, buttonheight * 3.5)
+  image(img_mycelon, canvaswidth - buttonwidth, 4 * buttonheight);
+  text(str(int(listSum(mycelons))), canvaswidth - 80, buttonheight * 4.5)
+
   // Layer 8, selected tool
-  active_circleX = canvaswidth-20;
+  active_circleX = canvaswidth - 20;
   active_circleY = 0;
-  switch(current_tool) {
+  switch (current_tool) {
     case Tool.Water:
-      active_circleY = buttonheight/2;
+      active_circleY = buttonheight / 2;
       break;
     case Tool.Plant:
-      active_circleY = buttonheight*1.5;
+      active_circleY = buttonheight * 1.5;
       break;
     case Tool.Orago:
-      active_circleY = buttonheight*2.5;
+      active_circleY = buttonheight * 2.5;
       break;
     case Tool.Kakora:
-      active_circleY = buttonheight*3.5;
+      active_circleY = buttonheight * 3.5;
       break;
     case Tool.Mycelon:
-      active_circleY = buttonheight*4.5;
+      active_circleY = buttonheight * 4.5;
       break;
   }
-  fill(0,255,0);
+  fill(0, 255, 0);
   circle(active_circleX, active_circleY, 10);
-  
+
   // Layer 9, score
   let wscore = listSum(waterDrops)
   let pscore = listSum(plants)
   let oscore = listSum(oragos)
   let kscore = listSum(kakoras)
   let mscore = listSum(mycelons)
-  let tscore = wscore+pscore+oscore+kscore+mscore;
+  let tscore = wscore + pscore + oscore + kscore + mscore;
   let biodiv;
   biodiv = 0;
   if (wscore > 0) { biodiv += (wscore / tscore) * log(wscore / tscore); }
@@ -161,22 +161,22 @@ function gameloop() {
   if (oscore > 0) { biodiv += (oscore / tscore) * log(oscore / tscore); }
   if (kscore > 0) { biodiv += (kscore / tscore) * log(kscore / tscore); }
   if (mscore > 0) { biodiv += (mscore / tscore) * log(mscore / tscore); }
-  biodiv = -int(biodiv*10)
-  text("Bio-score: "+biodiv, 50, canvasheight - 50);
+  biodiv = -int(biodiv * 10)
+  text("Bio-score: " + biodiv, 50, canvasheight - 50);
   soil = 0
-  for (let i = 0; i<300; i++) {
-    for (let j = 0; j<300; j++) {
+  for (let i = 0; i < 300; i++) {
+    for (let j = 0; j < 300; j++) {
       soil += dirt[i][j];
     }
   }
-  text("Soil health: "+soil, 50, canvasheight - 25);
+  text("Soil health: " + soil, 50, canvasheight - 25);
 }
 
 function drawDirt(fg) {
   fg.loadPixels();
-  for (let i=0; i<dirt.length; i++) {
-    for (let j=0; j<dirt[i].length; j++) {
-      let index = ((i + 150) + (j+150)*fg.width) * 4;
+  for (let i = 0; i < dirt.length; i++) {
+    for (let j = 0; j < dirt[i].length; j++) {
+      let index = ((i + 150) + (j + 150) * fg.width) * 4;
       let val = dirt[i][j];
       fg.pixels[index + 0] = val + 34;
       fg.pixels[index + 1] = val + 13;
@@ -190,11 +190,11 @@ function drawDirt(fg) {
 function drawWater(fg) {
   waterDrops = waterDrops.filter(drop => drop.d > 1);
   // randomly spawn in a water meteor
-  if (random(0,100)>98) {
-    x1 = random(-150,150)+300;
-    y1 = random(-150,150)+300;
-    if (dist(x1, y1, 300, 300)<300) {
-      waterDrops.push({x: x1, y: y1, d: random(2,13)})
+  if (random(0, 100) > 98) {
+    x1 = random(-150, 150) + 300;
+    y1 = random(-150, 150) + 300;
+    if (dist(x1, y1, 300, 300) < 300) {
+      waterDrops.push({ x: x1, y: y1, d: random(2, 13) })
     }
   }
   for (let i = 0; i < waterDrops.length; i++) {
@@ -203,14 +203,14 @@ function drawWater(fg) {
       if (i != j) {
         let other = waterDrops[j];
         let d = dist(drop.x, drop.y, other.x, other.y);
-        if (d < (drop.d + other.d)/2) {
+        if (d < (drop.d + other.d) / 2) {
           other.x = ((drop.x * drop.d) + (other.x * other.d)) / (drop.d + other.d);
           other.y = ((drop.y * drop.d) + (other.y * other.d)) / (drop.d + other.d);
           other.d = ((other.d * other.d) + (drop.d * drop.d)) ** 0.5;
           drop.d = 1;
-        } else {      
-          drop.x += (other.x - drop.x) / d**2;
-          drop.y += (other.y - drop.y) / d**2;
+        } else {
+          drop.x += (other.x - drop.x) / d ** 2;
+          drop.y += (other.y - drop.y) / d ** 2;
         }
       }
     }
@@ -223,11 +223,11 @@ function drawPlants(fg) {
   makeDirtFromDyingInList(plants, 2);
   plants = plants.filter(plant => plant.d > 2);
   // randomly spawn in a plant meteor
-  if (random(0,1000)>998) {
-    x1 = random(-150,150)+300;
-    y1 = random(-150,150)+300;
-    if (dist(x1, y1, 300, 300)<300) {
-      plants.push({x: x1, y: y1, d: random(3,8)})
+  if (random(0, 1000) > 998) {
+    x1 = random(-150, 150) + 300;
+    y1 = random(-150, 150) + 300;
+    if (dist(x1, y1, 300, 300) < 300) {
+      plants.push({ x: x1, y: y1, d: random(3, 8) })
     }
   }
   fg.fill(0, 255, 0, 150);
@@ -237,7 +237,7 @@ function drawPlants(fg) {
     for (let j = 0; j < waterDrops.length; j++) {
       let drop = waterDrops[j];
       let d = dist(plant.x, plant.y, drop.x, drop.y);
-      if (d < (plant.d + drop.d)/2) {
+      if (d < (plant.d + drop.d) / 2) {
         plant.d += 1
         drop.d -= 1
         continue;
@@ -246,21 +246,21 @@ function drawPlants(fg) {
     fg.circle(plant.x, plant.y, plant.d);
   }
   fg.stroke(0);
-}  
+}
 
 function drawOragos(fg) {
   makeDirtFromDyingInList(oragos, 3);
   oragos = oragos.filter(orago => orago.d > 3);
-  fg.fill(93,66,4,150);
+  fg.fill(93, 66, 4, 150);
   for (let i = 0; i < oragos.length; i++) {
     let orago = oragos[i];
-    if (random(0,1000)>990) {
+    if (random(0, 1000) > 990) {
       orago.d -= 1;
     }
     closest = closestTo(orago, plants);
     if (closest != null) {
       closest_d = dist(orago.x, orago.y, closest.x, closest.y);
-      if (closest_d < (orago.d + closest.d)/2) {
+      if (closest_d < (orago.d + closest.d) / 2) {
         orago.d += 1;
         closest.d -= 1;
       } else {
@@ -274,16 +274,16 @@ function drawOragos(fg) {
 function drawKakoras(fg) {
   makeDirtFromDyingInList(kakoras, 5);
   kakoras = kakoras.filter(kakora => kakora.d > 5);
-  fg.fill(255,0,0,150);
+  fg.fill(255, 0, 0, 150);
   for (let i = 0; i < kakoras.length; i++) {
     let kakora = kakoras[i];
-    if (random(0,1000)>990) {
-      kakora.d -= random(1,5);
+    if (random(0, 1000) > 990) {
+      kakora.d -= random(1, 5);
     }
     closest = closestTo(kakora, oragos);
     if (closest != null) {
       closest_d = dist(kakora.x, kakora.y, closest.x, closest.y);
-      if (closest_d < (kakora.d + closest.d)/2) {
+      if (closest_d < (kakora.d + closest.d) / 2) {
         kakora.d += 1;
         closest.d -= 1;
       } else {
@@ -296,26 +296,26 @@ function drawKakoras(fg) {
 
 function drawMycelons(fg) {
   mycelons = mycelons.filter(kakora => kakora.d > 8);
-  fg.fill(56,10,73,150);
+  fg.fill(56, 10, 73, 150);
   for (let i = 0; i < mycelons.length; i++) {
     let mycelon = mycelons[i];
-    if (random(0,1000)>990) {
-      
-      switch(int(random(0,4))) {
-        case 0: 
-          waterDrops.push({ x: mycelon.x, y: mycelon.y, d:2 })
+    if (random(0, 1000) > 990) {
+
+      switch (int(random(0, 4))) {
+        case 0:
+          waterDrops.push({ x: mycelon.x, y: mycelon.y, d: 2 })
           mycelon.d -= 2;
           break;
         case 1:
-          plants.push({ x: mycelon.x, y: mycelon.y, d:3 })
+          plants.push({ x: mycelon.x, y: mycelon.y, d: 3 })
           mycelon.d -= 3;
           break;
         case 2:
-          oragos.push({ x: mycelon.x, y: mycelon.y, d:5 })
+          oragos.push({ x: mycelon.x, y: mycelon.y, d: 5 })
           mycelon.d -= 5;
           break;
         case 3:
-          kakoras.push({ x: mycelon.x, y: mycelon.y, d:8 })
+          kakoras.push({ x: mycelon.x, y: mycelon.y, d: 8 })
           mycelon.d -= 8;
           break;
       }
@@ -329,7 +329,7 @@ function drawMycelons(fg) {
       } else {
         randomMove(mycelon);
       }
-    } 
+    }
     fg.circle(mycelon.x, mycelon.y, mycelon.d);
   }
 }
@@ -342,11 +342,11 @@ function mousePressed(event) {
     if (mouseX >= 600) {
       if (mouseY <= buttonheight) {
         current_tool = Tool.Water;
-      } else if (mouseY <= 2*buttonheight) {
+      } else if (mouseY <= 2 * buttonheight) {
         current_tool = Tool.Plant;
-      } else if (mouseY <= 3*buttonheight) {
+      } else if (mouseY <= 3 * buttonheight) {
         current_tool = Tool.Orago;
-      } else if (mouseY <= 4*buttonheight) {
+      } else if (mouseY <= 4 * buttonheight) {
         current_tool = Tool.Kakora;
       } else {
         current_tool = Tool.Mycelon;
@@ -355,8 +355,8 @@ function mousePressed(event) {
     else {
       d_center = dist(mouseX, mouseY, 300, 300);
       if (d_center < 150) {
-        switch(current_tool) {
-          case Tool.Water: 
+        switch (current_tool) {
+          case Tool.Water:
             waterDrops.push({ x: mouseX, y: mouseY, d: 2 });
             break;
           case Tool.Plant:
@@ -374,7 +374,7 @@ function mousePressed(event) {
         }
       }
     }
-  } 
+  }
 }
 
 function moveToward(obj1, obj2, speed) {
@@ -382,16 +382,16 @@ function moveToward(obj1, obj2, speed) {
   let dy = obj2.y - obj1.y;
   let distance = (dx ** 2 + dy ** 2) ** 0.5;
   if (distance > 0) {
-    obj1.x += (dx / distance) * speed * (random(1,100)/100);
-    obj1.y += (dy / distance) * speed * (random(1,100)/100);
+    obj1.x += (dx / distance) * speed * (random(1, 100) / 100);
+    obj1.y += (dy / distance) * speed * (random(1, 100) / 100);
   }
 }
 
 function randomMove(obj1) {
-  obj1.x += (random(0,101) - 50) / 100;
-  obj1.y += (random(0,101) - 50) / 100;
-  if (dist(obj1.x, obj1.y, 300, 300)>100) {
-    center = {x:300, y:300};
+  obj1.x += (random(0, 101) - 50) / 100;
+  obj1.y += (random(0, 101) - 50) / 100;
+  if (dist(obj1.x, obj1.y, 300, 300) > 100) {
+    center = { x: 300, y: 300 };
     moveToward(obj1, center, 1);
   }
 }
